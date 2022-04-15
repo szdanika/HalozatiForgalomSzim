@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace HalozatiForgalomSzim.NetworkTools
 {
-    internal class Router<T> : NetworkTool<T> where T : class
+    internal class Hub<T> : NetworkTool<T> where T : class
     {
-        public Router(int addres) : base(addres)
+        public Hub(int addres) : base(addres)
         {
         }
 
