@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace HalozatiForgalomSzim.NetworkTools
 {
-    internal class Router : NetworkTool //legjobb utvonalra kuldi tovabb
-    {
-        public Router(int addres, Connections<NetworkTool> con) : base(addres, con)
+    internal class Server : NetworkTool
+    {//Csak olyanra amelyfele el lehet erni a celpontot
+        public Server(int address, Connections<NetworkTool> connection) : base(address, connection)
         {
         }
 
@@ -19,7 +19,7 @@ namespace HalozatiForgalomSzim.NetworkTools
 
         public override void Send(NetworkTool sender, NetworkTool reciver, int bytes)
         {
-           
+            throw new NotImplementedException();
         }
     }
 }
