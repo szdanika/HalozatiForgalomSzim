@@ -8,7 +8,7 @@ namespace HalozatiForgalomSzim
         {
             Console.WriteLine("Megerkezet az uzenet ide : " + item);
         }
-        public static void test1()
+        public static void OnlySwitchTest()
         {
             Connections<NetworkTool> c = new Connections<NetworkTool>();
             NetworkTools.Hub h1 = new NetworkTools.Hub(1,c);
@@ -53,9 +53,101 @@ namespace HalozatiForgalomSzim
             h1.Send(h1, h7, 3);
             
         }
+        public static void OnlyServerTest()
+        {
+            Connections<NetworkTool> c = new Connections<NetworkTool>();
+            NetworkTools.Server s1 = new NetworkTools.Server(1, c);
+            NetworkTools.Server s2 = new NetworkTools.Server(2, c);
+            NetworkTools.Server s3 = new NetworkTools.Server(3, c);
+            NetworkTools.Server s4 = new NetworkTools.Server(4, c);
+            NetworkTools.Server s5 = new NetworkTools.Server(5, c);
+
+            NetworkTools.Server s6 = new NetworkTools.Server(6, c); // cant acces
+
+            c.AddTool(s1);
+            c.AddTool(s2);
+            c.AddTool(s3);
+            c.AddTool(s4);
+            c.AddTool(s5);
+            c.AddTool(s6);
+
+            c.AddEdge(s1, s2);
+            c.AddEdge(s1, s4);
+            c.AddEdge(s2, s5);
+            c.AddEdge(s4, s3);
+            c.AddEdge(s3, s5);
+
+            s1.recived += kiiro;
+            s2.recived += kiiro;
+            s3.recived += kiiro;
+            s4.recived += kiiro;
+            s5.recived += kiiro;
+            s6.recived += kiiro;
+
+
+            s4.Send(s4, s5, 3);
+
+
+            try { s1.Send(s1, s6, 3); }
+            catch (Exceptions.ItsNotConnectedException e)
+            {
+                Console.WriteLine(e.Message);
+            }
+        }
+        public static void OnlyRouterTest()
+        {
+            Connections<NetworkTool> c = new Connections<NetworkTool>();
+            NetworkTools.Router r1 = new NetworkTools.Router(1, c);
+            NetworkTools.Router r2 = new NetworkTools.Router(2, c);
+            NetworkTools.Router r3 = new NetworkTools.Router(3, c);
+
+            c.AddTool(r1);
+            c.AddTool(r2);
+            c.AddTool(r3);
+
+            c.AddEdge(r1, r2);
+            c.AddEdge(r2, r3);
+
+            r1.Send(r1, r3, 3);
+
+
+        }
+        public static void ServerPlusSwitch()
+        {
+            Connections<NetworkTool> c = new Connections<NetworkTool>();
+
+            NetworkTools.Server s1 = new NetworkTools.Server(1, c);
+            NetworkTools.Server s2 = new NetworkTools.Server(2, c);
+            NetworkTools.Server s3 = new NetworkTools.Server(3, c);
+
+            NetworkTools.Hub h1 = new NetworkTools.Hub(4, c);
+            NetworkTools.Hub h2 = new NetworkTools.Hub(5, c);
+            NetworkTools.Hub h3 = new NetworkTools.Hub(6, c);
+
+            c.AddTool(s1);
+            c.AddTool(s2);
+            c.AddTool(s3);
+
+            c.AddTool(h1);
+            c.AddTool(h2);
+            c.AddTool(h3);
+
+            c.AddEdge(s1,h2);
+            c.AddEdge(s1,s2);
+            c.AddEdge(h1,s2);
+            c.AddEdge(s2,h2);
+            c.AddEdge(s2,h3);
+            c.AddEdge(h2,s3);
+            //c.AddEdge(s3,h3);
+            //c.AddEdge(h2,h3);
+
+            h1.Send(h1, h3, 2);
+        }
         static void Main(string[] args)
         {
-            test1();
+            //OnlySwitchTest();
+            //OnlyServerTest();
+            ServerPlusSwitch();
         }
     }
 }

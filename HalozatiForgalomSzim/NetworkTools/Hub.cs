@@ -23,10 +23,8 @@ namespace HalozatiForgalomSzim.NetworkTools
 
         public override void Send(NetworkTool sender, NetworkTool reciver, int bytes)
         {
-            //Console.WriteLine("Beleptem ide : " + this.ToString());
             if(sender == this)
             {
-
                 if (!connections.ItsConnected(sender, reciver))
                     throw new Exceptions.ItsNotConnectedException(sender, reciver);
             }
@@ -34,9 +32,9 @@ namespace HalozatiForgalomSzim.NetworkTools
 
             foreach(var item in connections.Neighbors(this))
             {
-                //Console.WriteLine("innen kuldom :" + this.ToString() + " ide : " + item.To.ToString());
                 if(!sentMassage.Contains(item.To))
                 {
+                    Console.WriteLine(this.ToString() + " kuldi neki :" + item.To.ToString());
                     ListAdd(item.To);
                     item.To.ListAdd(this);
                     item.To.Recive(sender, reciver, bytes);
