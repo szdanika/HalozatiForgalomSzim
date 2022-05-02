@@ -100,15 +100,26 @@ namespace HalozatiForgalomSzim
             NetworkTools.Router r1 = new NetworkTools.Router(1, c);
             NetworkTools.Router r2 = new NetworkTools.Router(2, c);
             NetworkTools.Router r3 = new NetworkTools.Router(3, c);
+            NetworkTools.Router r4 = new NetworkTools.Router(4, c);
+            NetworkTools.Router r5 = new NetworkTools.Router(5, c);
+            NetworkTools.Router r6 = new NetworkTools.Router(6, c);
 
             c.AddTool(r1);
             c.AddTool(r2);
             c.AddTool(r3);
+            c.AddTool(r4);
+            c.AddTool(r5);
+            c.AddTool(r6);
 
             c.AddEdge(r1, r2);
             c.AddEdge(r2, r3);
+            c.AddEdge(r2, r4);
+            c.AddEdge(r3,r5);
+            c.AddEdge(r4,r5);
+            c.AddEdge(r3, r6);
+            c.AddEdge(r5, r6);
 
-            r1.Send(r1, r3, 3);
+            r4.Send(r4, r6, 3);
 
 
         }
@@ -147,7 +158,8 @@ namespace HalozatiForgalomSzim
         {
             //OnlySwitchTest();
             //OnlyServerTest();
-            ServerPlusSwitch();
+            //ServerPlusSwitch();
+            OnlyRouterTest();
         }
     }
 }

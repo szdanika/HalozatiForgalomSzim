@@ -30,9 +30,12 @@ namespace HalozatiForgalomSzim.NetworkTools
                     throw new Exceptions.ItsNotConnectedException(sender, reciver);
             }
 
+            NetworkTool sendtowho = BestRouteFind(this, reciver);
+            Console.WriteLine(this.ToString() + " kuldi : " + sendtowho.ToString());
+            sendtowho.Recive(sender, reciver, bytes);
 
         }
-        public void BestRouteFind(NetworkTool sender, NetworkTool reciver)
+        public NetworkTool BestRouteFind(NetworkTool sender, NetworkTool reciver)
         {
             //s que f halmaz
             Queue<NetworkTool> s = new Queue<NetworkTool>();
@@ -55,24 +58,32 @@ namespace HalozatiForgalomSzim.NetworkTools
                     {
                         s.Enqueue(item.To);
                         f.Add(item.To);
-                        int index = connections.tools.IndexOf(item.To);
-                        if(dist[index] > dist[connections.tools.IndexOf(item.To)] || dist[index] == null)
+                        int index = connections.tools.IndexOf(item.To); // kovetkezo
+
+                        if(dist[index] > dist[connections.tools.IndexOf(k)]+1 || dist[index] == 0)
                         {
-                            dist[index] = dist[connections.tools.IndexOf(item.To)] + 1;
-                            from[index] = this;
+                            dist[index] = dist[connections.tools.IndexOf(k)] + 1;
+                            from[index] = k;
                         }    
                         //dist[connections.tools.IndexOf(item.To)] = dist[connections.tools.IndexOf(k)] + 1;
                     }
                 }
             }
-            
+            //Console.WriteLine("legjobb ut erre vezett :" + BackTrackFind(from, reciver, sender).ToString());
+                return BackTrackFind(from, reciver, sender);
         }
-        public void BackTrackFind(List<NetworkTool> list, NetworkTool corrent, NetworkTool start)
+        public NetworkTool BackTrackFind(NetworkTool[] list, NetworkTool corrent, NetworkTool start)
         {
-            if(list[connections.tools.IndexOf(corrent)] == start)
+            bool gotit = false;
+            NetworkTool eppenezo = corrent;
+            while(gotit == false)
             {
-                
+                if (list[connections.tools.IndexOf(eppenezo)] == start)
+                    gotit = true;
+                else
+                    eppenezo = list[connections.tools.IndexOf(eppenezo)];
             }
+            return eppenezo;
         }
         
         
