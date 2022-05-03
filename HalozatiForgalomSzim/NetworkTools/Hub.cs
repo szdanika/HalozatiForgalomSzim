@@ -8,7 +8,8 @@ namespace HalozatiForgalomSzim.NetworkTools
 {
     internal class Hub : NetworkTool
     { //Mindenkinek elkuldi akinek csak tudja illetve neki meg nem kuldott uzenetett
-        public event Recived recived;
+        public override event Recived recived;
+        public override event Forwarder forward;
         public Hub(int addres, Connections<NetworkTool> con) : base(addres, con)
         {
         }
@@ -34,7 +35,7 @@ namespace HalozatiForgalomSzim.NetworkTools
             {
                 if(!sentMassage.Contains(item.To))
                 {
-                    Console.WriteLine(this.ToString() + " kuldi neki :" + item.To.ToString());
+                    forward?.Invoke(this.ToString(), item.To.ToString());
                     ListAdd(item.To);
                     item.To.ListAdd(this);
                     item.To.Recive(sender, reciver, bytes);

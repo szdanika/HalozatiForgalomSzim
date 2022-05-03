@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace HalozatiForgalomSzim
 {
@@ -8,6 +9,12 @@ namespace HalozatiForgalomSzim
         {
             Console.WriteLine("Megerkezet az uzenet ide : " + item);
         }
+        public static void Kuldo(string from, string to)
+        {
+            Console.WriteLine(from+" uzenetet kuld :" + to +" nak ");
+        }
+
+
         public static void OnlySwitchTest()
         {
             Connections<NetworkTool> c = new Connections<NetworkTool>();
@@ -104,12 +111,20 @@ namespace HalozatiForgalomSzim
             NetworkTools.Router r5 = new NetworkTools.Router(5, c);
             NetworkTools.Router r6 = new NetworkTools.Router(6, c);
 
-            c.AddTool(r1);
-            c.AddTool(r2);
-            c.AddTool(r3);
-            c.AddTool(r4);
-            c.AddTool(r5);
-            c.AddTool(r6);
+            List<NetworkTool> tesztEszkozok = new List<NetworkTool>();
+            tesztEszkozok.Add(r1);
+            tesztEszkozok.Add(r2);
+            tesztEszkozok.Add(r3);
+            tesztEszkozok.Add(r4);
+            tesztEszkozok.Add(r5);
+            tesztEszkozok.Add(r6);
+
+            foreach(NetworkTool eszkoz in tesztEszkozok)
+            {
+                c.AddTool(eszkoz);
+                eszkoz.forward += Kuldo;
+                eszkoz.recived += kiiro;
+            }
 
             c.AddEdge(r1, r2);
             c.AddEdge(r2, r3);
@@ -154,12 +169,57 @@ namespace HalozatiForgalomSzim
 
             h1.Send(h1, h3, 2);
         }
+        public static void AllInOne()
+        {
+            Connections<NetworkTool> c = new Connections<NetworkTool>();
+            List<NetworkTool> tesztEszkozok = new List<NetworkTool>();
+
+            NetworkTools.Hub h1 = new NetworkTools.Hub(1, c); tesztEszkozok.Add(h1);
+            NetworkTools.Hub h2 = new NetworkTools.Hub(4, c); tesztEszkozok.Add(h2);
+            NetworkTools.Hub h3 = new NetworkTools.Hub(5, c); tesztEszkozok.Add(h3);
+
+            NetworkTools.Server s1 = new NetworkTools.Server(2, c); tesztEszkozok.Add(s1);
+            NetworkTools.Server s2 = new NetworkTools.Server(6, c); tesztEszkozok.Add(s2);
+
+            NetworkTools.Router r1 = new NetworkTools.Router(3, c); tesztEszkozok.Add(r1);
+            NetworkTools.Router r2 = new NetworkTools.Router(7, c); tesztEszkozok.Add(r2);
+            NetworkTools.Router r3 = new NetworkTools.Router(8, c); tesztEszkozok.Add(r3);
+
+            foreach (NetworkTool eszkoz in tesztEszkozok)
+            {
+                c.AddTool(eszkoz);
+                eszkoz.forward += Kuldo;
+                eszkoz.recived += kiiro;
+            }
+
+            c.AddEdge(h1, s1);
+            c.AddEdge(h1, r1);
+
+            c.AddEdge(s1, h3);
+
+            c.AddEdge(r1, h2);
+            c.AddEdge(r1, s2);
+            c.AddEdge(r1, r2);
+
+            c.AddEdge(h2,h3);
+
+            c.AddEdge(h3,s2);
+
+            c.AddEdge(s2,r2);
+            c.AddEdge(s2,r3);
+
+            c.AddEdge(r2,r3);
+
+            h1.Send(h1, r3, 2);
+
+        }
         static void Main(string[] args)
         {
             //OnlySwitchTest();
             //OnlyServerTest();
             //ServerPlusSwitch();
-            OnlyRouterTest();
+
+            AllInOne();
         }
     }
 }

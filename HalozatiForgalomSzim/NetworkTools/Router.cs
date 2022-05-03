@@ -8,7 +8,8 @@ namespace HalozatiForgalomSzim.NetworkTools
 {
     internal class Router : NetworkTool //legjobb utvonalra kuldi tovabb
     {//legjobb kezdot megnezni
-        public event Recived recived;
+        public override event Recived recived;
+        public override event Forwarder forward;
 
         public Router(int addres, Connections<NetworkTool> con) : base(addres, con)
         {
@@ -31,7 +32,8 @@ namespace HalozatiForgalomSzim.NetworkTools
             }
 
             NetworkTool sendtowho = BestRouteFind(this, reciver);
-            Console.WriteLine(this.ToString() + " kuldi : " + sendtowho.ToString());
+            forward?.Invoke(this.ToString(), sendtowho.ToString());
+            //Console.WriteLine(this.ToString() + " kuldi : " + sendtowho.ToString());
             sendtowho.Recive(sender, reciver, bytes);
 
         }
@@ -69,8 +71,8 @@ namespace HalozatiForgalomSzim.NetworkTools
                     }
                 }
             }
-            //Console.WriteLine("legjobb ut erre vezett :" + BackTrackFind(from, reciver, sender).ToString());
-                return BackTrackFind(from, reciver, sender);
+
+            return BackTrackFind(from, reciver, sender);
         }
         public NetworkTool BackTrackFind(NetworkTool[] list, NetworkTool corrent, NetworkTool start)
         {

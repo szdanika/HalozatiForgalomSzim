@@ -8,7 +8,8 @@ namespace HalozatiForgalomSzim.NetworkTools
 {
     internal class Server : NetworkTool
     {//Csak olyanra amelyfele el lehet erni a celpontot
-        public event Recived recived;
+        public override event Recived recived;
+        public override event Forwarder forward;
         public Server(int address, Connections<NetworkTool> connection) : base(address, connection)
         {
         }
@@ -33,7 +34,7 @@ namespace HalozatiForgalomSzim.NetworkTools
             {
                 if(!sentMassage.Contains(item))
                 {
-                    Console.WriteLine(this.ToString() + " kuldi neki :" + item.ToString());
+                    forward?.Invoke(this.ToString(), item.ToString());
                     sentMassage.Add(item);
                     item.ListAdd(this);
                     item.Recive(sender, reciver, bytes);
