@@ -211,14 +211,14 @@ namespace HalozatiForgalomSzim
             c.AddEdge(r2,r3);
 
             h1.Send(h1, r3, 2);
-
+            h1.ResetAll();
         }
         static void Main(string[] args)
         {
             //OnlySwitchTest();
             //OnlyServerTest();
             //ServerPlusSwitch();
-
+            //OnlyRouterTest();
             AllInOne();
         }
     }
