@@ -18,21 +18,22 @@ namespace HalozatiForgalomSzim
         public static void OnlySwitchTest()
         {
             Connections<NetworkTool> c = new Connections<NetworkTool>();
-            NetworkTools.Hub h1 = new NetworkTools.Hub(1,c);
-            NetworkTools.Hub h2 = new NetworkTools.Hub(2,c);
-            NetworkTools.Hub h3 = new NetworkTools.Hub(3,c);
-            NetworkTools.Hub h4 = new NetworkTools.Hub(4,c); // cant access
-            NetworkTools.Hub h5 = new NetworkTools.Hub(5, c);
-            NetworkTools.Hub h6 = new NetworkTools.Hub(6, c);
-            NetworkTools.Hub h7 = new NetworkTools.Hub(7, c);
+            List<NetworkTool> tesztEszkozok = new List<NetworkTool>();
 
-            c.AddTool(h1);
-            c.AddTool(h2);
-            c.AddTool(h3);
-            c.AddTool(h4);
-            c.AddTool(h5);
-            c.AddTool(h6);
-            c.AddTool(h7);
+            NetworkTools.Hub h1 = new NetworkTools.Hub(1,c); tesztEszkozok.Add(h1);
+            NetworkTools.Hub h2 = new NetworkTools.Hub(2,c); tesztEszkozok.Add(h2);
+            NetworkTools.Hub h3 = new NetworkTools.Hub(3,c); tesztEszkozok.Add(h3);
+            NetworkTools.Hub h4 = new NetworkTools.Hub(4,c); tesztEszkozok.Add(h4); // cant access
+            NetworkTools.Hub h5 = new NetworkTools.Hub(5, c); tesztEszkozok.Add(h5);
+            NetworkTools.Hub h6 = new NetworkTools.Hub(6, c); tesztEszkozok.Add(h6);
+            NetworkTools.Hub h7 = new NetworkTools.Hub(7, c); tesztEszkozok.Add(h7);
+
+            foreach (NetworkTool eszkoz in tesztEszkozok)
+            {
+                c.AddTool(eszkoz);
+                eszkoz.forward += Kuldo;
+                eszkoz.recived += kiiro;
+            }
 
             c.AddEdge(h1,h2);
             c.AddEdge(h1,h3);
@@ -41,13 +42,6 @@ namespace HalozatiForgalomSzim
             c.AddEdge(h5, h7);
             c.AddEdge(h5, h3);
 
-            h1.recived += kiiro;
-            h2.recived += kiiro;
-            h3.recived += kiiro;
-            h4.recived += kiiro;
-            h5.recived += kiiro;
-            h6.recived += kiiro;
-            h7.recived += kiiro;
 
 
             try { h6.Send(h6, h5, 3); }
@@ -63,20 +57,22 @@ namespace HalozatiForgalomSzim
         public static void OnlyServerTest()
         {
             Connections<NetworkTool> c = new Connections<NetworkTool>();
-            NetworkTools.Server s1 = new NetworkTools.Server(1, c);
-            NetworkTools.Server s2 = new NetworkTools.Server(2, c);
-            NetworkTools.Server s3 = new NetworkTools.Server(3, c);
-            NetworkTools.Server s4 = new NetworkTools.Server(4, c);
-            NetworkTools.Server s5 = new NetworkTools.Server(5, c);
+            List<NetworkTool> tesztEszkozok = new List<NetworkTool>();
 
-            NetworkTools.Server s6 = new NetworkTools.Server(6, c); // cant acces
+            NetworkTools.Server s1 = new NetworkTools.Server(1, c); tesztEszkozok.Add(s1);
+            NetworkTools.Server s2 = new NetworkTools.Server(2, c); tesztEszkozok.Add(s2);
+            NetworkTools.Server s3 = new NetworkTools.Server(3, c); tesztEszkozok.Add(s3);
+            NetworkTools.Server s4 = new NetworkTools.Server(4, c); tesztEszkozok.Add(s4);
+            NetworkTools.Server s5 = new NetworkTools.Server(5, c); tesztEszkozok.Add(s5);
 
-            c.AddTool(s1);
-            c.AddTool(s2);
-            c.AddTool(s3);
-            c.AddTool(s4);
-            c.AddTool(s5);
-            c.AddTool(s6);
+            NetworkTools.Server s6 = new NetworkTools.Server(6, c); tesztEszkozok.Add(s6); // cant acces
+
+            foreach (NetworkTool eszkoz in tesztEszkozok)
+            {
+                c.AddTool(eszkoz);
+                eszkoz.forward += Kuldo;
+                eszkoz.recived += kiiro;
+            }
 
             c.AddEdge(s1, s2);
             c.AddEdge(s1, s4);
@@ -84,12 +80,6 @@ namespace HalozatiForgalomSzim
             c.AddEdge(s4, s3);
             c.AddEdge(s3, s5);
 
-            s1.recived += kiiro;
-            s2.recived += kiiro;
-            s3.recived += kiiro;
-            s4.recived += kiiro;
-            s5.recived += kiiro;
-            s6.recived += kiiro;
 
 
             s4.Send(s4, s5, 3);
@@ -141,22 +131,22 @@ namespace HalozatiForgalomSzim
         public static void ServerPlusSwitch()
         {
             Connections<NetworkTool> c = new Connections<NetworkTool>();
+            List<NetworkTool> tesztEszkozok = new List<NetworkTool>();
 
-            NetworkTools.Server s1 = new NetworkTools.Server(1, c);
-            NetworkTools.Server s2 = new NetworkTools.Server(2, c);
-            NetworkTools.Server s3 = new NetworkTools.Server(3, c);
+            NetworkTools.Server s1 = new NetworkTools.Server(1, c); tesztEszkozok.Add(s1);
+            NetworkTools.Server s2 = new NetworkTools.Server(2, c); tesztEszkozok.Add(s2);
+            NetworkTools.Server s3 = new NetworkTools.Server(3, c); tesztEszkozok.Add(s3);
 
-            NetworkTools.Hub h1 = new NetworkTools.Hub(4, c);
-            NetworkTools.Hub h2 = new NetworkTools.Hub(5, c);
-            NetworkTools.Hub h3 = new NetworkTools.Hub(6, c);
+            NetworkTools.Hub h1 = new NetworkTools.Hub(4, c); tesztEszkozok.Add(h1);
+            NetworkTools.Hub h2 = new NetworkTools.Hub(5, c); tesztEszkozok.Add(h2);
+            NetworkTools.Hub h3 = new NetworkTools.Hub(6, c); tesztEszkozok.Add(h3);
 
-            c.AddTool(s1);
-            c.AddTool(s2);
-            c.AddTool(s3);
-
-            c.AddTool(h1);
-            c.AddTool(h2);
-            c.AddTool(h3);
+            foreach (NetworkTool eszkoz in tesztEszkozok)
+            {
+                c.AddTool(eszkoz);
+                eszkoz.forward += Kuldo;
+                eszkoz.recived += kiiro;
+            }
 
             c.AddEdge(s1,h2);
             c.AddEdge(s1,s2);
