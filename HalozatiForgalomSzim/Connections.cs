@@ -28,6 +28,8 @@ namespace HalozatiForgalomSzim
         }
         public void AddEdge(T from, T to)
         {
+            AlreadyHaveEdge(from ,to);
+
             Edge e = new Edge { To = to };
 
             int ind = tools.IndexOf(from);
@@ -39,6 +41,14 @@ namespace HalozatiForgalomSzim
             ports[ind].Add(e);
 
             NewEdge?.Invoke(from.ToString(), to.ToString());
+        }
+        public void AlreadyHaveEdge(T from, T to)
+        {
+            foreach (Edge e in this.Neighbors(from))
+            {
+                if(e.To.Equals(to))
+                    throw new Exceptions.AlreadyHaveThatEdgeException();
+            }
         }
         public List<Edge> Neighbors(T tool)
         {

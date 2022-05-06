@@ -199,6 +199,7 @@ namespace HalozatiForgalomSzim
             c.AddEdge(s2,r3);
 
             c.AddEdge(r2,r3);
+            //c.AddEdge(r2, r3);
 
             h1.Send(h1, r3, 2);
             h1.ResetAll();
