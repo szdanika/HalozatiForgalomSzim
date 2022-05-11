@@ -72,9 +72,9 @@ namespace HalozatiForgalomSzim.NetworkTools
                 }
             }
 
-            return BackTrackFind(from, reciver, sender);
+            return WhereToStart(from, reciver, sender);
         }
-        public NetworkTool BackTrackFind(NetworkTool[] list, NetworkTool corrent, NetworkTool start)
+        public NetworkTool WhereToStart(NetworkTool[] list, NetworkTool corrent, NetworkTool start)
         {
             bool gotit = false;
             NetworkTool eppenezo = corrent;
@@ -87,7 +87,5 @@ namespace HalozatiForgalomSzim.NetworkTools
             }
             return eppenezo;
         }
-        
-        
     }
 }

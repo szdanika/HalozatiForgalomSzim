@@ -29,7 +29,7 @@ namespace HalozatiForgalomSzim.NetworkTools
                 if (!connections.ItsConnected(sender, reciver))
                     throw new Exceptions.ItsNotConnectedException(sender, reciver);
             }
-            //Console.WriteLine("beleptemtho");
+
             foreach (var item in WhereCanISend(this, reciver))
             {
                 if(!sentMassage.Contains(item))
